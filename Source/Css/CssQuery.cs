@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Fizzler;
+//using Fizzler;
 using Svg.ExCSS;
 
 namespace Svg.Css
 {
     internal static class CssQuery
     {
+        /*
         public static IEnumerable<SvgElement> QuerySelectorAll(this SvgElement elem, string selector, SvgElementFactory elementFactory)
         {
             var generator = new SelectorGenerator<SvgElement>(new SvgElementOps(elementFactory));
             Fizzler.Parser.Parse(selector, generator);
             return generator.Selector(Enumerable.Repeat(elem, 1));
         }
+        */
 
         public static int GetSpecificity(this BaseSelector selector)
         {

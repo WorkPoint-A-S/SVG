@@ -414,6 +414,8 @@ namespace Svg
 
             var styles = new List<ISvgNode>();
 
+            List<SvgElement> AllElements = new List<SvgElement>(); //WorkPoint
+
             while (reader.Read())
             {
                 try
@@ -428,6 +430,8 @@ namespace Svg
                             if (elementStack.Count > 0)
                             {
                                 element = elementFactory.CreateElement(reader, svgDocument);
+
+                                AllElements.Add(element);
                             }
                             else
                             {
@@ -508,7 +512,30 @@ namespace Svg
                         var rootNode = new NonSvgElement();
                         rootNode.Children.Add(svgDocument);
 
-                        var elemsToStyle = rootNode.QuerySelectorAll(rule.Selector.ToString(), elementFactory);
+                        //var elemsToStyle = rootNode.QuerySelectorAll(rule.Selector.ToString(), elementFactory);
+
+                        //******** WorkPoint ****************
+
+                        List<SvgElement> elemsToStyle = new List<SvgElement>();
+
+                        foreach (SvgElement elem in AllElements)
+                        {
+                            foreach (string key in elem.CustomAttributes.Keys)
+                            {
+                                if (key.ToLowerInvariant() == "class")
+                                {
+                                    if (string.Equals("." + elem.CustomAttributes[key], rule.Value, StringComparison.OrdinalIgnoreCase) == true)
+                                    {
+                                        elemsToStyle.Add(elem);
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        //************************************
+
                         foreach (var elem in elemsToStyle)
                         {
                             foreach (var decl in rule.Declarations)
